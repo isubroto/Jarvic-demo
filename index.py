@@ -72,11 +72,9 @@ def takeCommand():
             print(f"Sorry Subroto Say Again")
             return "none"
     return query
-
 if __name__ == "__main__":
     wishMe()
-    #takeCommand()
-    if 1:
+    while True:
         query = takeCommand().lower()
         if 'wikipedia' and 'who' in query:
             speak('Searching Wikipedia...')
@@ -85,118 +83,67 @@ if __name__ == "__main__":
             result = wikipedia.summary(query, sentences=2)
             speak("According to Wikipedia")
             speak(result)
+        
         elif 'news' in query:
             speak('News Headings')
             query = query.replace("news", "")
-            news:any 
-            if 'apple' and 'iphone' in query:
-                news = newsapi.get_everything(q='apple',
-                                          sort_by='publishedAt')
-            elif 'google' and 'android' in query:
-                news = newsapi.get_everything(q='google',
-                                          sort_by='publishedAt')
-            elif 'tesla' in query:
-                news = newsapi.get_everything(q='tesla',
-                                          sort_by='publishedAt')
-            art=news["articles"]
-            #print(art)
-            count=1
-            if len(art)>10:
-                for i in range(10):
-                    speak(art[i]["title"])
-                    speak(art[i]["description"])
-                    if count!=10:
-                        speak("Moving on to the next news article")
-                        count+=1
-            else:
-                for article in art:
-                    speak(article["title"])
-                    speak(article["description"])
-                    if count!=len(art):
-                        speak("Moving on to the next news article")
-                        count+=1
+            news = newsapi.get_everything(q='apple' if 'apple' and 'iphone' in query else
+                                        'google' if 'google' and 'android' in query else
+                                        'tesla' if 'tesla' in query else
+                                        '', sort_by='publishedAt')
+            articles = news["articles"]
+            for count, article in enumerate(articles[:10], 1):
+                speak(article["title"])
+                speak(article["description"])
+                if count != len(articles):
+                    speak("Moving on to the next news article")
+            speak("anything else?")
+        
         elif 'open' in query:
             speak("Opening...")
-            if 'google' in query:
-                webbrowser.open("https://www.google.com/")
-                speak(f"I have opened google for you.")
-            elif 'youtube' in query:
-                webbrowser.open("https://www.youtube.com/")
-                speak(f"I have opened youtube for you.")
-            elif 'wikipedia' in query:
-                webbrowser.open(f"https://en.wikipedia.org/")
-                speak(f"I have opened wikipedia page for you.")
-            elif 'facebook' in query:
-                webbrowser.open("https://www.facebook.com/")
-                speak(f"I have opened facebook for you.")
-            elif 'instagram' in query:
-                webbrowser.open("https://www.instagram.com/")
-                speak(f"I have opened instagram for you.")
-            elif 'twitter' and 'x' in query:
-                webbrowser.open(f"https://x.com/")
-                speak(f"I have opened twitter for you.")
-            elif 'github' in query:
-                webbrowser.open(f"https://github.com/")
-                speak(f"I have opened github for you.")
-            elif 'linkedin' in query:
-                webbrowser.open(f"https://www.linkedin.com/")
-                speak(f"I have opened linkedin for you.")
-            elif 'stackoverflow' in query:
-                webbrowser.open(f"https://stackoverflow.com/")
-                speak(f"I have opened stackoverflow for you.")
-            elif 'discord' in query:
-                webbrowser.open(f"https://discord.com/")
-                speak(f"I have opened discord for you.")
-            elif 'gmail' in query:
-                webbrowser.open(f"https://mail.google.com/")
-                speak(f"I have opened gmail for you.")
-            elif 'tumblr' in query:
-                webbrowser.open(f"https://www.tumblr.com/")
-                speak(f"I have opened tumblr for you.")
-            elif 'pinterest' in query:
-                webbrowser.open(f"https://www.pinterest.com/")
-                speak(f"I have opened pinterest for you.")
-            elif 'whatsapp' in query:
-                webbrowser.open(f"https://web.whatsapp.com/")
-                speak(f"I have opened whatsapp for you.")
-            elif 'reddit' in query:
-                webbrowser.open(f"https://www.reddit.com/")
-                speak(f"I have opened reddit for you.")
-            elif 'google drive' in query:
-                webbrowser.open(f"https://www.google.com/drive/")
-                speak(f"I have opened google drive for you.")
-            elif 'outlook' in query:
-                webbrowser.open(f"https://outlook.com/")
-                speak(f"I have opened outlook for you.")
-            elif 'zoho' in query:
-                webbrowser.open(f"https://www.zoho.com/")
-                speak(f"I have opened zoho for you.")
-            elif 'netflix' in query:
-                webbrowser.open(f"https://www.netflix.com/")
-                speak(f"I have opened netflix for you.")
-            elif 'apple' in query:
-                webbrowser.open(f"https://www.apple.com/")
-                speak(f"I have opened apple for you.")
-            elif 'amazon' in query:
-                webbrowser.open(f"https://www.amazon.com/")
-                speak(f"I have opened amazon for you.")
-            elif 'ebay' in query:
-                webbrowser.open(f"https://www.ebay.com/")
-                speak(f"I have opened ebay for you.")
-            elif 'apple pay' in query:
-                webbrowser.open(f"https://apple.com/apple-pay/")
-                speak(f"I have opened apple pay for you.")
-            elif 'zoho mail' in query:
-                webbrowser.open(f"https://mail.zoho.com/")
-                speak(f"I have opened zoho mail for you.")
+            sites = {
+                'google': "https://www.google.com/",
+                'youtube': "https://www.youtube.com/",
+                'wikipedia': "https://en.wikipedia.org/",
+                'facebook': "https://www.facebook.com/",
+                'instagram': "https://www.instagram.com/",
+                'twitter': "https://x.com/",
+                'github': "https://github.com/",
+                'linkedin': "https://www.linkedin.com/",
+                'stackoverflow': "https://stackoverflow.com/",
+                'discord': "https://discord.com/",
+                'gmail': "https://mail.google.com/",
+                'tumblr': "https://www.tumblr.com/",
+                'pinterest': "https://www.pinterest.com/",
+                'whatsapp': "https://web.whatsapp.com/",
+                'reddit': "https://www.reddit.com/",
+                'google drive': "https://www.google.com/drive/",
+                'outlook': "https://outlook.com/",
+                'zoho': "https://www.zoho.com/",
+                'netflix': "https://www.netflix.com/",
+                'apple': "https://www.apple.com/",
+                'amazon': "https://www.amazon.com/",
+                'ebay': "https://www.ebay.com/",
+                'apple pay': "https://apple.com/apple-pay/",
+                'zoho mail': "https://mail.zoho.com/"
+            }
+            for site, url in sites.items():
+                if site in query:
+                    webbrowser.open(url)
+                    speak(f"I have opened {site} for you.")
+                    break
             else:
                 speak("I am not able to open this website. Please check the spelling and try again.")
+                speak("anything else?")
+        
         elif 'search' and 'search in browser' in query:
             speak('What do you want to search?')
-            web_query=takeCommand().lower()
+            web_query = takeCommand().lower()
             web_url = f"https://www.google.com/search?q={web_query}"
             webbrowser.open(web_url)
             speak(f"I have opened {web_query} for you.")
+            speak("anything else?")
+        
         elif 'weather' and 'in' in query:
             speak('City name?')
             city_name = takeCommand().lower()
@@ -215,70 +162,64 @@ if __name__ == "__main__":
                 speak(f"In {city_name}, the current temperature is {temperature:.2f}°C humidity is {humidity} maximum Temperature is {temp_max:.2f}°C minimum Temperature is {temp_min:.2f}°C and {weather_desc}.")
             else:
                 speak("City Not Found")
+            speak("anything else?")
+        
         elif 'ip' and 'ip address' and 'ip details' in query:
             ip_address = requests.get('https://api.ipify.org').text
-            ip_info=requests.get(f'https://geo.ipify.org/api/v2/country?apiKey=at_Kvdmvmd0o1oqjyzUCbal81qeNQbss&ipAddress={ip_address}').text
-            country=requests.get('https://api.first.org/data/v1/countries').text
-            ip_info=json.loads(ip_info)
-            country=json.loads(country)
-            print(f"Your IP address is {ip_info['ip']} country is {country['data'][ip_info['location']['country']]['country']} and city is {ip_info['location']['region']} internet provider is {ip_info['isp']}")
+            ip_info = requests.get(f'https://geo.ipify.org/api/v2/country?apiKey=at_Kvdmvmd0o1oqjyzUCbal81qeNQbss&ipAddress={ip_address}').text
+            country = requests.get('https://api.first.org/data/v1/countries').text
+            ip_info = json.loads(ip_info)
+            country = json.loads(country)
             speak(f"Your IP address is {ip_info['ip']} country is {country['data'][ip_info['location']['country']]['country']} and city is {ip_info['location']['region']} internet provider is {ip_info['isp']}")
+            speak("anything else?")
+        
         elif 'run' in query:
-            if 'command prompt' in query:
-                speak('Opening Command Prompt...')
-                os.system("start cmd")
-                speak("Command Prompt has been opened.")
-            elif 'calculator' in query:
-                speak('Opening Calculator...')
-                os.system("calc")
-                speak("Calculator has been opened.")
-            elif 'notepad' in query:
-                speak('Opening Notepad...')
-                os.system("notepad")
-                speak("Notepad has been opened.")
-            elif 'paint' in query:
-                speak('Opening Paint...')
-                os.system("mspaint")
-                speak("Paint has been opened.")
-            elif 'powershell' in query:
-                speak('Opening PowerShell...')
-                os.system("powershell")
-                speak("PowerShell has been opened.")
-            elif 'vs code' in query:
-                speak('Opening Visual Studio Code...')
-                os.system("code")
-                speak("Visual Studio Code has been opened.")
-            elif 'chrome' in query:
-                speak('Opening Google Chrome...')
-                os.system("chrome")
-                speak("Google Chrome has been opened.")
-            elif 'edge' in query:
-                speak('Opening Microsoft Edge...')
-                os.system("edge")
-                speak("Microsoft Edge has been opened.")
-            elif 'firefox' in query:
-                speak('Opening Mozilla Firefox...')
-                os.system("firefox")
-                speak("Mozilla Firefox has been opened.")
-            elif 'brave' in query:
-                speak('Opening Brave Browser...')
-                os.system("brave")
-                speak("Brave Browser has been opened.")
-            elif 'opera' in query:
-                speak('Opening Opera...')
-                os.system("opera")
-                speak("Opera has been opened.")
-        elif 'youtube' in query:
+            apps = {
+                'command prompt': "start cmd",
+                'calculator': "calc",
+                'notepad': "notepad",
+                'paint': "mspaint",
+                'powershell': "powershell",
+                'vs code': "code",
+                'chrome': "chrome",
+                'edge': "edge",
+                'firefox': "firefox",
+                'brave': "brave",
+                'explorer': "explorer"
+            }
+            for app, command in apps.items():
+                if app in query:
+                    os.system(command)
+                    speak(f"I have opened {app}.")
+                    break
+            else:
+                speak("I am not able to open this application.")
+                speak("anything else?")
+        
+        elif 'play' in query and 'youtube' in query:
+            speak('What do you want to play on YouTube?')
+            video_query = takeCommand().lower()
+            kit.playonyt(video_query)
+        
+        elif 'search' in query and 'youtube' in query:
             speak('What do you want to search on YouTube?')
             video_query = takeCommand().lower()
-            if 'search' in video_query:
-                webbrowser.open(f"https://www.youtube.com/results?search_query={video_query}")
-                speak(f"I have opened YouTube search results for {video_query}.")
-            elif video_query:
-                 kit.playonyt(video_query)
-                 speak(f'I have opened YouTube for {video_query}.')
-            else:  
-                 speak(f'I can not opened YouTube now.')
-               
+            web_url = f"https://www.youtube.com/results?search_query={video_query}"
+            webbrowser.open(web_url)
+            speak(f"I have searched for {video_query} on YouTube.")
+            speak("anything else?")
+        
+        elif 'search' in query:
+            speak('What do you want to search on Google?')
+            search_query = takeCommand().lower()
+            web_url = f"https://www.google.com/search?q={search_query}"
+            webbrowser.open(web_url)
+            speak(f"I have searched for {search_query} on Google.")
+        elif 'quit' in query or 'exit' in query or 'see you' in query or 'bye' in query or 'goodbye' in query:
+            speak("Goodbye! Have a great day.")
+            exit()
+        else:
+            speak("I am sorry, I did not understand that. anything else?")
+             
         
                 
