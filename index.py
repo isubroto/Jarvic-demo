@@ -30,6 +30,15 @@ def speak(audio):
     engine.runAndWait()
 
 def wishMe():
+    """
+    This function is used to wish the user based on the current time.
+
+    Parameters:
+    None: This function does not take any parameters.
+
+    Returns:
+    None: The function does not return any value. It use to wish the user.
+    """
     hour =int(datetime.datetime.now().hour)
     if hour > 0 and hour <12:
         speak(f"Good Morning Subroto")
@@ -40,19 +49,29 @@ def wishMe():
     speak(f" I am Jarvis, Please tell me how can i help you?")
 
 def takeCommand():
-    r=sr.Recognizer()
+    """
+    This function is used to capture voice commands and convert them into text.
+
+    Parameters:
+    None: This function does not take any parameters. It uses the microphone to capture audio input.
+
+    Returns:
+    str: The function returns a string representing the recognized text from the voice command.
+         If the recognition fails, it returns "none".
+    """
+    r = sr.Recognizer()
     with sr.Microphone() as source:
         print("Listening...")
         r.pause_threshold = 1.5
         audio = r.listen(source)
         try:
             print("Recognizing...")
-            query=r.recognize_google(audio)
+            query = r.recognize_google(audio)
             print(f"user said {query} \n")
         except Exception as e:
             print(f"Sorry Subroto Say Again")
             return "none"
-        return query
+    return query
 
 if __name__ == "__main__":
     wishMe()
