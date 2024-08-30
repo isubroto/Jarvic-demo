@@ -8,6 +8,7 @@ from newsapi import NewsApiClient
 import webbrowser
 import os
 import pywhatkit as kit
+import random
 engine=pyttsx3.init("sapi5")
 
 voice=engine.getProperty("voices")
@@ -63,7 +64,7 @@ def takeCommand():
     r = sr.Recognizer()
     with sr.Microphone() as source:
         print("Listening...")
-        r.pause_threshold = 1.5
+        r.pause_threshold = 1.1
         audio = r.listen(source)
         try:
             print("Recognizing...")
@@ -216,13 +217,31 @@ if __name__ == "__main__":
             web_url = f"https://www.google.com/search?q={search_query}"
             webbrowser.open(web_url)
             speak(f"I have searched for {search_query} on Google.")
-        elif 'quit' in query or 'exit' in query or 'see you' in query or 'bye' in query or 'goodbye' in query:
+        elif 'joke' in query or 'jocks' in query:
+            urls=["https://official-joke-api.appspot.com/random_joke", 'https://icanhazdadjoke.com/',"https://v2.jokeapi.dev/joke/Any"]
+            keys =["setup","punchline","joke","delivery"]
+            selected_url = random.choice(urls)
+            #print(selected_url)
+            response = requests.get(selected_url, headers={"Accept": "application/json"})
+            results = response.json()
+            #print(results)
+            values=[]
+            for key in keys:
+                if key in results:
+                    value = results.get(key)
+                    values.append(str(value))
+            sentence = ". ".join(values)
+            speak(sentence)
+        elif 'quit' in query or 'exit' in query or 'see you' in query or 'bye' in query or 'goodbye' in query or 'no thanks' in query:
+            query = query.replace("quit", "")
+            query = query.replace("exit", "")
+            query = query.replace("see you", "")
+            query = query.replace("bye", "")
+            query = query.replace("goodbye", "")
+            query = query.replace("no", "")
+            query = query.replace("no thanks", "")
             speak("Goodbye! Have a great day.")
             exit()
-        elif 'joke' in query or 'jocks' in query:
-            response = requests.get('https://icanhazdadjoke.com/', headers={"Accept": "application/json"})
-            results = response.json()
-            print(results)
         else:
             speak("I am sorry, I did not understand that. anything else?")
              
