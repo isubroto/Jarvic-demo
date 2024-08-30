@@ -12,10 +12,12 @@ This project implements a voice assistant in Python using various libraries. The
 - **IP Details**: Displays the IP address and related information.
 - **Run Applications**: The assistant can open applications like Command Prompt, Calculator, Notepad, Paint, PowerShell, and more.
 - **YouTube Search and Play**: Search for videos on YouTube or play directly using PyWhatKit.
+- **Jocks**: The assistant tells jocks for you.
 
 ## Requirements
 
 To run this project, ensure you have the following Python libraries installed:
 
 ```bash
-pip install pyttsx3 datetime SpeechRecognition wikipedia requests pywhatkit newsapi-python
+pip install -r .\requirements.txt
+```
