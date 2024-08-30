@@ -39,6 +39,7 @@ def wishMe():
     Returns:
     None: The function does not return any value. It use to wish the user.
     """
+    
     hour =int(datetime.datetime.now().hour)
     if hour > 0 and hour <12:
         speak(f"Good Morning Subroto")
@@ -218,6 +219,10 @@ if __name__ == "__main__":
         elif 'quit' in query or 'exit' in query or 'see you' in query or 'bye' in query or 'goodbye' in query:
             speak("Goodbye! Have a great day.")
             exit()
+        elif 'joke' in query or 'jocks' in query:
+            response = requests.get('https://icanhazdadjoke.com/', headers={"Accept": "application/json"})
+            results = response.json()
+            print(results)
         else:
             speak("I am sorry, I did not understand that. anything else?")
              
